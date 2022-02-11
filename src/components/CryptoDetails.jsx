@@ -15,7 +15,8 @@ import {
   ThunderboltOutlined 
 } from '@ant-design/icons';
 
-import { useGetCryptoDetailsQuery } from '../services/cryptoApi';
+import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
+import LineChart from './LineChart';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -24,7 +25,11 @@ const CryptoDetails = () => {
   const { uuid } = useParams();
   const [timePeriod, setTimePeriod] = useState('7d');
   const { data, isFetching } = useGetCryptoDetailsQuery(uuid);
+  const { data: coinHistory } = useGetCryptoHistoryQuery({ uuid, timePeriod });
   const cryptoDetails = data?.data?.coin;
+
+  if (isFetching) return 'Loading...';
+
   const volume = () => {
     for (const [key, value] of Object.entries(cryptoDetails)) {
       if (key === '24hVolume') {
@@ -35,7 +40,6 @@ const CryptoDetails = () => {
   }
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
-
 
   const stats = [
     { title: 'Price to USD', value: `$ ${cryptoDetails?.price && millify(cryptoDetails?.price)}`, icon: <DollarCircleOutlined /> },
@@ -74,7 +78,11 @@ const CryptoDetails = () => {
       >
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
-      {/* line chart */}
+      <LineChart 
+        coinHistory={coinHistory}
+        currentPrice={cryptoDetails?.price && millify(cryptoDetails.price)}
+        coinName={cryptoDetails?.name}
+      />
       <Col className="stats-container">
         <Col className="coin-value-statistics">
           <Col className="coin-value-statistics-heading">
