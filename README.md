@@ -13,4 +13,4 @@ Responsive cryptocurreny React App created with CoinRanking and Bing News Search
 
 ### Check it out here:
 
-<a href="https://adamptk.github.io" target="_blank"><img src="public/cryptoverse.png" alt="cryptoverse" /></a>
+<a href="https://adamptk.github.io/cryptoverse" target="_blank"><img src="public/cryptoverse.png" alt="cryptoverse" /></a>
